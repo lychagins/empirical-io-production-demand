@@ -1,0 +1,419 @@
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\section{Intro}
+
+\begin{frame}{Industrial Organization}
+	A field of economics describing strategic interactions of firms in the marketplace
+	\bi
+		\item{Has a well-developed theoretical part:
+		\bi
+			\item{Theory of the firm}
+			\item{Monopoly, oligopolistic competition}
+			\item{Price and non-price strategies (discrimination, differentiation, advertising)}
+			\item{Theory of contracts}
+			\item{Theory of auctions}
+			\item{etc.}
+		\ei
+		These topics deserve a separate course. We will NOT talk much about the theory.
+		}
+		\item{Econometric tools for identifying the elements of models from data.
+		}
+	\ei
+	\medskip
+		We will still see models (many of them!). Their purpose is not to provide theoretical insight; these models are designed for empirical applications.
+\end{frame}
+
+%
+%\begin{frame}{}
+%	An economist analyzing an industry typically has:\medskip
+%	
+%	\begin{center}
+%		\fbox{Some very incomplete collection of noisy data}
+%	\end{center}
+%	
+%	To make sense of these data, the economist comes up with:\medskip
+%	\begin{center}
+%		\fbox{An underlying model that (\emph{hopefully}) generated the data}
+%	\end{center}
+%	
+%	By matching the data to the model's predictions, the economist identifies as many components of the model as he needs or can.\bigskip
+%	
+%	The model should be logically consistent, and the matching procedure should be econometrically sound.
+%\end{frame}
+
+%\begin{frame}{A typical setting}
+%	\begin{description}
+%		\item{Consumers}
+%		\bi
+%			\item{Create demand for final goods}
+%			\item{Have heterogeneous preferences over product characteristics}
+%		\ei
+%		\item{Firms}
+%		\bi
+%			\item{Produce differentiated final goods from a set of inputs}
+%			\item{Choose how much of inputs to employ}
+%			\item{Enter/exit the market endogenously, introduce/withdraw products, do R\&D}
+%			\item{Differ in productivity, size}
+%			\item{Are strategic, i.e. are not price takers}
+%		\ei
+%	\end{description}
+%\end{frame}
+
+
+\begin{frame}{Our plan}
+	Empirical IO 1 presents modern tools for identifying the pieces of this setting using real life data. We will concentrate on:
+	\bi
+		\item{Production functions}
+		\item{Consumer demand and market equilibrium when the set of active firms is given}
+
+	\ei
+			Empirical IO 2: Entry/exit/investment decisions of firms
+			\bi
+				\item{In a static setting (entry/exit decision made only once and never changes)}
+				\item{In a dynamic setting (i.e. the underlying model is a multiperiod game, and today's decisions affect tomorrow's payoffs)}
+			\ei
+\end{frame}
+
+\begin{frame}{Broader goal: Structural approach to empirical work}
+	More generally, we will get familiar with the \emph{``structural econometrics''} as opposed to the \emph{``reduced form econometrics''}.
+	
+	\textbf{Reduced form approach:}
+	\begin{itemize}
+		\item{There is an easily reproducible treatment $x$ (e.g., school class size)}
+		\item{There is a directly observed outcome $y$ (e.g., exam scores)}
+		\item{One is interested in the causal effect of $x$ on $y$}
+		\item{Solution: Randomize $x$ for many subjects, observe $y$, run $y$ on $x$}
+	\end{itemize}
+	
+	\textbf{Structural approach:}
+	\begin{itemize}
+		\item{There is a big, one-of-a-kind potential treatment (Malev is about to shut down)}
+		\item{After-treatment outcomes unobservable}
+		\item{Outcomes defy direct measurement (e.g., consumer surplus)}
+		\item{But we need to make decisions now (let Malev go bankrupt?)}
+		\item{Solution: set up a model, estimate it using pre-treatment data. Use it to predict the effect of treatment.}
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}{Practical side: A template for your first paper}
+%	How to start your first research project?
+%	\begin{itemize}
+%		\item{A very ambiguous task unless you have done it before.}
+%		\item{One strategy: Learn to walk before you run
+%			\begin{enumerate}
+%				\item{Follow a template}
+%				\item{Forget about being creative, just get useful results}
+%				\item{Don't invent the wheel, use existing tools}
+%			\end{enumerate}
+%		}
+%	\end{itemize}
+%	How to make use of this course:
+%	\begin{itemize}
+%		\item{The lectures focus on tools at the expense of applications. Don't be fooled, the field cares a lot about applications!}
+%		\item{Assigned papers are more representative. Understand strengths and flaws, borrow good practice. Learn what the field sees as important contribution.}
+%	\end{itemize}
+%\end{frame}
+
+\begin{frame}{Logistics}
+	Material:
+	\bi
+		\item{Papers from the reading list. I will announce relevant papers ahead of time. Try skimming them in advance and understand the main contribution. Skip technical intricacies; I will cover those in class.}
+		\item{No textbooks yet; however, there are two good articles in the Handbook of Econometrics (Ackerberg et al, Reiss \& Wolak)}.
+	\ei
+	Assignments:
+	\bi
+		\item{Practical take-home assignments (80\% of the final grade)}
+		\item{A referee report on a paper (20\%)}
+	\ei
+\end{frame}
+
+\begin{frame}{Prerequisites}
+	\bi
+		\item{Knowledge of econometrics is a plus (ML, GMM, non-parametric estimation) --- complementarity with the advanced econometrics classes.}
+		\item{Programming experience (Matlab, Python,...)}
+	\ei
+\end{frame}
+
+\begin{frame}{Assignments}
+	Ideally, I want to give assignments useful outside of this course. I need some feedback from you:
+	\bi
+		\item Current topics of interest? Anything that involves productivity or simulating market outcomes?
+		\item Do you have access to firm-level data on balance sheet items? Data on demand: consumer choices, individual or product level?
+		\item Econometrics: GMM, ML, non-parametrics -- how familiar are you?
+		\item Programming: Python or Matlab -- preference, experience?
+
+	\ei
+\end{frame}
+
+
+\begin{frame}{}{}
+	\begin{center}
+		{\Large Econometric preliminaries}
+	\end{center}
+\end{frame}
+
+\subsection{GMM, ML, nonparametrics}
+
+\begin{frame}{A quick overview of some econometric tools}
+	\bi
+		\item{Generalized Method of Moments}
+		\item{Maximum Likelihood}
+		\item{Non-parametric estimation}
+	\ei
+\end{frame}
+
+\begin{frame}{GMM}
+	Suppose:
+	\bi
+		\item{Our economic model implies a set of \emph{moment conditions}:
+		\be
+			E[m(x_j; \theta)] = 0
+		\ee}
+		\item{$j$ -- observation, $x_j$ -- observables, $\theta$ -- parameters}
+		\item{Important requirement: The equation above precisely {\color{blue}identifies} $\theta$, i.e. there is only one solution.}
+	\ei
+	Let $\dim m$ be the number of conditions, $\dim\theta$ be the number of unknowns
+	\bi
+		\item{if $\dim m < \dim\theta$: \color{red}underidentification}
+		\item{if $\dim m = \dim\theta$: \color{red}exact identification}
+		\item{if $\dim m > \dim\theta$: \color{red}overidentification}
+	\ei
+	Note, there is {\color{blue}identification} and {\color{red}identification}. These are different concepts!
+\end{frame}
+
+\begin{frame}{GMM}
+		\begin{block}{Example: linear regression and OLS}
+		Observables $y$ and $X$ are generated by some process that ensures the following
+		\bi
+			\item{Observed data $\{(y_j, X_j)\}_{j=1}^N$ is an i.i.d. sequence}
+			\item{$E[y_j|X_j] = X'_j\theta$}
+		\ei
+		Then the following moment condition holds:
+		\be
+			E[X_j(y_j - X'_j\theta)] = 0
+		\ee
+		The same condition can be obtained by minimizing $E[(y_j - X'_j\theta)^2]$ w.r.t. $\theta$.
+		\bi
+			\item{$\theta$ is identified (easy to show)}
+			\item{There is exact identification}
+		\ei
+	\end{block}
+\end{frame}
+
+\begin{frame}{GMM}
+	\begin{block}{Example: IV estimator}
+		\bi
+			\item{Observed data: $y$, $X$, $Z$}
+			\item{$E[y_j|Z_j] = X'_j\theta$}
+		\ei
+		Then the following moment condition holds:
+		\be
+			E[Z_j(y_j - X'_j\theta)] = 0
+		\ee
+	
+		\bi
+			\item{\color{red}exact identification}: $\dim(Z_j) = \dim(X_j)$
+				\be
+					\theta = E[Z_jX'_j]^{-1}E[Z_jy_j]
+				\ee
+			\item{\color{red}overidentification}: $\dim(Z_j) > \dim(X_j)$. 
+			
+			In general, system $A\theta = b$ has no solution
+		\ei
+	\end{block}
+\end{frame}
+
+\begin{frame}{GMM -- Estimation}
+	In the case of {\color{red}exact identification} obtaining an estimate is easy:
+	\bi
+		\item{Approximate expectation with the mean:
+		\be
+			\frac{1}{N}\sum_{j=1}^Nm(x_j; \theta) \approx E[m(x_j;\theta)] = 0
+		\ee}
+		\item{Solve this system of equations, obtain $\widehat{\theta}$ such that
+		\be
+			\frac{1}{N}\sum_{j=1}^Nm(x_j; \widehat{\theta}) = 0
+		\ee}
+	\ei
+	But what should one do in the case of {\color{red}overidentification}?\\
+	Note, the above equation is unlikely to have solution at all: there are more equations than unknowns!
+\end{frame}
+
+\begin{frame}{GMM}
+	\textbf{Main idea:} instead of trying to solve
+	\be
+		\overline{m}(x; \theta) = \frac{1}{N}\sum_{j=1}^Nm(x_j; \theta) = 0
+	\ee
+	minimize the Euclidean distance of $\overline{m}$ from zero:
+	\be
+		\widehat{\theta}_{\text{Unweighted GMM}} = \arg\min_\theta\left[\overline{m}'(x;\theta)\overline{m}(x;\theta)\right]
+	\ee
+	In general, find $\widehat{\theta}$ as a solution to minimization problem
+	\be
+		\widehat{\theta}_{GMM} = \arg\min_\theta\left[\overline{m}'(x;\theta)W\overline{m}(x;\theta)\right]
+	\ee
+	where $W$ -- some positive-definite matrix of weights on the moment conditions.\\\bigskip
+	Under certain assumptions: $\widehat{\theta}_{GMM}$ is consistent, asymptotically normal; weights $W$ can be chosen to maximize the precision of $\widehat{\theta}_{GMM}$.
+\end{frame}
+
+\begin{frame}{GMM}
+	\begin{block}{Example: IV estimator}
+	Let's go back to our example of a linear model with instruments
+	\begin{align*}
+		&y = X\theta + e\\
+		&\overline{m}(y, X,Z; \theta) = \frac{1}{N}Z'(y-X\theta)
+	\end{align*}
+	\begin{align*}
+		\widehat{\theta}_{GMM} &= \arg\min_\theta\left[\overline{m}'W\overline{m}\right]\\
+		&= \arg\min_\theta\left[(y'-\theta'X')ZWZ'(y-X\theta)\right]\\
+		& = \left(X'ZWZ'X\right)^{-1}X'ZWZ'y
+	\end{align*}
+	Let $W = \left(Z'Z\right)^{-1}$, then we obtain a 2SLS estimator
+	\be
+		\widehat{\theta}_{GMM} = \left(X'Z\left(Z'Z\right)^{-1}Z'X\right)^{-1}X'Z\left(Z'Z\right)^{-1}Z'y = \widehat\theta_{2SLS}
+	\ee
+	\end{block}
+\end{frame}
+
+\begin{frame}{Maximum likelihood}
+	Suppose:
+	\bi
+		\item{Our economic model implies that observables $x$ have distribution $F(x;\theta)$ with only $\theta$ unknown. Denote $f(x; \theta)$ the density of this distribution}
+		\item{We could have found some moments of this distribution and proceeded with GMM to estimate $\theta$}
+		\item{However, the moment equations would provide us with just a part of the information contained in the observables}
+		\item{ML estimator uses all of this information}
+	\ei
+\end{frame}
+
+\begin{frame}{Maximum likelihood}
+	Definition:
+	\be
+		\widehat{\theta}_{ML} = \arg\max_\theta\mathcal{L}(\theta) = \arg\max_\theta\sum_{j=1}^N\ln\left[f(x_j;\theta)\right]
+	\ee
+	$\mathcal{L}(\theta)$ --- loglikelihood function.\\\bigskip
+	Under certain assumptions $\widehat{\theta}_{ML}$ is consistent and asymptotically normal.
+	\begin{block}{Example}
+		Let $x_j \sim N[\mu, \sigma]$, where $\mu$ and $\sigma$ are unknown\\\medskip
+		Density: $f(x_j; \mu, \sigma) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left[-\frac{(x_j - \mu)^2}{2\sigma^2}\right]$\\\medskip
+		Loglikelihood: $\mathcal{L}(\mu, \sigma) = \sum_{j=1}^N\ln\left[f(x_j;\mu, \sigma)\right] = - \frac{N}{2}\ln\left[2\pi\sigma^2\right] - \frac{1}{2\sigma^2}\sum_j(x_j - \mu)^2$\\\medskip
+		Solution: $\widehat{\mu}_{ML} = \overline{x}$, and $\widehat{\sigma}^2_{ML} = \frac{1}{N}\sum_j(x_j - \overline{x})^2$
+	\end{block}
+\end{frame}
+
+%\begin{frame}{Conditional likelihood}
+%	As a rule, we don't want to specify a distribution for \emph{every} observable
+%	\begin{block}{Example: linear regression with normal errors}
+%	Let $y_j = \beta_0 + \beta_1x_j + e_j$, and
+%	\begin{align*}
+%		&e_j \sim N[0,\sigma_e], i.i.d.\\
+%		&x_j \sim G(x; \theta_x), i.i.d., \text{$G(\cdot)$ not specified}
+%	\end{align*}
+%	Density: $f(y_j, x_j; \beta, \sigma_e, \theta_x) = f(y_j|x_j; \beta, \sigma_e)g(x_j; \theta_x)$.\\
+%	Likelihood function:
+%	\begin{multline*}
+%		\mathcal{L} = \sum_{j=1}^N\ln\left[f(y_j|x_j; \beta, \sigma_e)g(x_j; \theta_x)\right] = \sum_{j=1}^N\ln{f(y_j|x_j; \beta, \sigma_e)} + \sum_{j=1}^N\ln{g(x_j; \theta_x)}
+%	\end{multline*}
+%	Conditional likelihood:
+%	\be
+%		\mathcal{L}_c =\sum_{j=1}^N\ln{f(y_j|x_j; \beta, \sigma_e)}.
+%	\ee
+%	
+%	If $\theta_x$ does not include $\beta$ or $\sigma_e$, then conditional ML = regular (full info) ML
+%	%One doesn't need 2nd term (and assumptions about $G$) to find $\beta$ and $\sigma_e$.
+%	\end{block}
+%\end{frame}
+
+\begin{frame}{Nonparametrics}
+	Parametric model:
+	\be
+		y = p(x,\beta) + e,\quad \text{$p(\cdot)$ \emph{is known} up to $\beta$ (e.g. $p(x,\beta) = x'\beta$).}
+	\ee
+	Non-parametric model:
+	\be
+		y = g(x) + e, \quad \text{$g(\cdot)$ \emph{is unknown}.}
+	\ee
+	Semi-parametric model:
+	\be
+		y = p(x, \beta) + g(x) + e.
+	\ee
+	Why non-parametrics? Sometimes economic theory is too vague about the exact form of $g(x)$.
+	
+	E.g. quantity demanded depends on price, but the exact relationship is unknown. By using non-parametric estimation we let the data tell us this relationship!
+\end{frame}
+
+\begin{frame}{Nonparametrics}
+	Two main methodologies: 
+	\bi
+		\item{local non-parametric estimation (e.g. kernel, K-nearest neighbor)}
+		\item{global non-parametric estimation (e.g. series)}
+	\ei
+	Both have pros and cons; we are not getting into details here
+\end{frame}
+
+\begin{frame}{Kernel density estimation}
+	\bi
+		\item{Standard nonparametric estimator of a distribution function $F$ is the \emph{empirical CDF} $\widehat{F}$:}
+		\be
+			\widehat{F}(x) = \widehat\Pr\{x_j\leq x\} = \frac{1}{N}\sum_{j=1}^{N}I(x_j \leq x)
+		\ee
+		\item{}$\widehat{F}$ is not differentiable, even if $F$ is differentiable. Solution:
+		\be
+			\widehat{F}(x) = \frac{1}{N}\sum_{j=1}^{N}K\left(\frac{x - x_j}{h}\right)
+		\ee
+		where $K$ is some CDF of our choice, and $h$ is a positive \emph{bandwidth}.
+		\item{Take the derivative to get the density:}
+		\be
+			\widehat{f}(x) = \frac{1}{Nh}\sum_{j=1}^{N}k\left(\frac{x - x_j}{h}\right)
+		\ee
+	\ei
+\end{frame}
+
+\begin{frame}{Kernel density estimation}
+	\bi
+		\item{}Typical choices of a kernel $k(\cdot)$: normal density, rectangle, triangle.
+		\item{}Given $k$, bandwidth $h$ is assumed to vary with sample size, $N$. In larger samples one chooses a smaller bandwidth.
+	\ei
+\end{frame}
+
+\begin{frame}{Kernel regression estimation}
+	\bi
+		\item{Suppose we want to estimate a regression function $g(x)$:
+		\be
+			y = g(x) + e, \quad E[e|x] = 0
+		\ee}
+		\item{Solution:}
+		\be
+			g(x) = E[y|x] = \int{}y\frac{f(y,x)}{f(x)}dy
+		\ee
+		Approximate 
+		\begin{align*}
+			\widehat{f}(y,x) &= \frac{1}{Nh^2}\sum_{j=1}^{N}k\left(\frac{x - x_j}{h}\right)k\left(\frac{y - y_j}{h}\right)\\
+			\widehat{f}(x) &= \frac{1}{Nh}\sum_{j=1}^{N}k\left(\frac{x - x_j}{h}\right)
+		\end{align*}
+		where $k(\cdot)$ has zero mean. Substitute and obtain
+		\be
+			\widehat{g}(x) = \frac{1}{Nh}\sum_{j=1}^{N}\frac{k\left(\frac{x - x_j}{h}\right)}{\widehat{f}(x)}y_j
+		\ee
+	\ei
+\end{frame}
+
+\begin{frame}{Series estimation}
+	\bi
+		\item{Suppose we want to estimate a regression function $g(x)$:
+		\be
+			y = g(x) + e, \quad E[e|x] = 0
+		\ee}
+		\item{Solution: assume that $g(\cdot)$ belongs to a function space with known basis $\{\xi_i(x)\}_{i=1}^\infty$. Then}
+		\be
+			g(x) = \sum_{i=1}^\infty{\alpha_i\xi_i(x)}
+		\ee
+		Truncate terms $M+1,\dots,\infty$, 
+		\be
+			y_j = \sum_{i=1}^M{\alpha_i\xi_i(x_j)} + e_j
+		\ee
+		and estimate coefficients $\alpha_i$ using OLS.
+		\item{In larger samples one chooses a larger $M$}
+	\ei
+\end{frame}

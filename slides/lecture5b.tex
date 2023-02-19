@@ -1,0 +1,45 @@
+%\subsection{Deeper issues with flexible inputs}
+
+\begin{frame}{Deeper issues with flexible inputs}
+	Consider Cobb-Douglas technology with flexible materials:
+	\begin{align}
+		q_{jt} &= \beta_0 + \beta_\ell\ell_{jt} + \beta_kk_{jt} + \beta_mm_{jt} + u_{jt} + w_{jt}
+	\end{align}
+	Firm observes $u_{jt}$, chooses $M_{jt}$ to maximize expected profit ($w_{jt}$ is unknown!). $K_{jt}$ and $L_{jt}$ are pre-determined. F.O.C.:
+	\begin{align*}
+		\frac{p_{m,t}M_{jt}}{p_{q,t}E_w[Q_{jt}]} &= \beta_m\\
+		\text{Or, } m_{jt} &= \frac{1}{1-\beta_m}\left[C_t + \beta_0 + \beta_\ell\ell_{jt} + \beta_kk_{jt} + u_{jt}\right]
+	\end{align*}
+	Substitute to obtain
+	\begin{align}
+		q_{jt} &= \frac{\beta_0 + \beta_mC_t}{1-\beta_m} + \frac{\beta_\ell}{1-\beta_m}\ell_{jt} + \frac{\beta_k}{1-\beta_m}k_{jt} + \frac{u_{jt}}{1-\beta_m} + w_{jt}
+	\end{align}
+\end{frame}
+
+\begin{frame}
+	\begin{align}\label{spec1}
+		q_{jt} &= \beta_0 + \beta_\ell\ell_{jt} + \beta_kk_{jt} + \beta_mm_{jt} + u_{jt} + w_{jt}\\\label{spec2}
+		q_{jt} &= \frac{\beta_0 + \beta_mC_t}{1-\beta_m} + \frac{\beta_\ell}{1-\beta_m}\ell_{jt} + \frac{\beta_k}{1-\beta_m}k_{jt} + \frac{u_{jt}}{1-\beta_m} + w_{jt}
+	\end{align}
+	Issues:
+	\begin{itemize}
+		\item{}$\beta_m$ not identified: We can always write down a model without $m$ that generates the same $q$ as the model with $\beta_m\neq{}0$; (\ref{spec1}) and (\ref{spec2}) are observationally equivalent.
+		\item{}TFP estimates depend on the choice between (\ref{spec1}) and (\ref{spec2}): $u_{jt} + w_{jt}$ vs. $\frac{u_{jt}}{1-\beta_m} + w_{jt}$.
+	\end{itemize}
+	Solution: use the first order condition to back out $\beta_m$:
+	\begin{align*}
+		\frac{p_{m,t}M_{jt}}{p_{q,t}Q_{jt}}\frac{e^{w_{jt}}}{Ee^{w_{jt}}} &= \beta_m
+	\end{align*}
+	Gandhi, Navarro, Rivers (2017) develop this idea further.
+\end{frame}
+
+\begin{frame}{Other issues}
+\begin{enumerate}
+	\item{Multiproduct firms --- usually have to rely on aggregate output, rather that output by product. Proper definition of productivity? Check De Loecker (multiple papers).}
+	\item{Sectors with high rates of product innovation --- productivity is notoriously hard to measure:
+		\begin{itemize}
+			\item{Use quantities on the LHS --- apples vs oranges issue.}
+			\item{Use revenues --- may misidentify markups as productivity.}
+		\end{itemize}}
+\end{enumerate}
+\end{frame}

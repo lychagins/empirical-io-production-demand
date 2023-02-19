@@ -1,0 +1,280 @@
+\subsection{Olley \& Pakes}
+
+%\begin{frame}{A quick recap}
+%	We would like to estimate production function (in logs):
+%	\be
+%		q_{jt} = \beta_0 + \beta_kk_{jt} + \beta_\ell\ell_{jt} + e_{jt}
+%	\ee
+%	Issues:
+%	\bi
+%		\item{}Inputs are endogenous; in particular, $\ell_{jt}$ depends on $e_{jt}$
+%		\item{}Sample selection: firms make endogenous entry/exit decisions, we only observe continuing firms
+%	\ei
+%	Estimators
+%	\bi
+%		\item{OLS: should be avoided -- addresses neither of these issues}
+%		\item{Fixed effects: makes strong assumptions about $e_{jt}$; the estimates suggest a substantial bias}
+%	\ei
+%\end{frame}
+
+\begin{frame}{Olley, Pakes (1996)}
+	Overview
+	\bi
+		\item{A method for the production function estimation allowing for:}
+		\bi
+			\item{Endogeneity of inputs (labor; capital is pre-determined)}
+			\item{Selection (exit)}
+			\item{Unobserved productivity differences across firms. Productivity is allowed to change in time with a degree of randomness}
+		\ei
+		\item{Main requirements of their method:}
+		\bi
+			\item{The econometrician observes firm level investments into physical capital}
+			\item{Investment is a \emph{monotonic} function of a firm's productivity}
+			\item{Exit is determined by the firm's productivity}
+		\ei
+	\ei
+\end{frame}
+
+
+\begin{frame}{Model}
+	Firms
+	\bi
+		\item{Compete in a differentiated goods market}
+		\item{Are characterized by \emph{firm-specific state variables}: $(a_{jt}, k_{jt}, u_{jt})$ -- age, capital, efficiency}
+		\item{Face same factor prices, which follow an exogenous 1st order Markov process}
+	\ei
+	There is an infinite number of discrete time periods. Every time period proceeds in three stages:
+	\begin{enumerate}
+		\item{Each firm learns its new efficiency, $u_{jt}$, and the commonly observed market structure, $\Delta_t$ (factor prices, states of active firms)}
+		\item{Firms decide whether to exit. Exiting firms receive $\Phi$ -- a sell-off value -- and never reappear again}
+		\item{Continuing firms choose levels of labor and investment}
+	\end{enumerate}
+	
+\end{frame}
+
+\begin{frame}{State transition}
+	Tomorrow's firm-specific state depends on the today's state:
+	\bi
+		\item{$a_{jt+1} = a_{jt} + 1$}
+		\item{$K_{jt+1} = (1-\delta)K_{jt} + i_{jt}$ (note the delayed effect)}
+		\item{Efficiency index $u_{jt}$ -- an exogenous 1st order Markov process
+		\be
+			F(u_{jt+1}|I_{jt}) = F(u_{jt+1}|u_{jt})
+		\ee
+		$I_{jt}$ -- firm $j$'s full information set. $F(u_{jt+1}|u_{jt})$ stochastically increases in $u_{jt}$}
+	\ei
+\end{frame}
+
+\begin{frame}{Firm's objective}
+	Firms maximize expected discounted value of future profits:
+	\begin{multline*}
+		V(k_{jt}, a_{jt}, u_{jt}, \Delta_t) = \max\{\Phi, \max_{i_{jt}\geq{0}}[\pi(k_{jt}, a_{jt}, u_{jt}, \Delta_t) - c(i_{jt}, \Delta_t)\\
+		+ \beta{}E\left[V(k_{jt+1}, a_{jt+1}, u_{jt+1}, \Delta_{t+1})|k_{jt}, a_{jt}, u_{jt}, i_{jt}, \Delta_{jt}\right]]\}
+	\end{multline*}
+	Equilibrium solution:
+	\bi
+		\item{Exit rule:}
+		\be
+			\chi_{jt} = \left\{
+			\begin{array}{ll}
+				1 & \text{if $u_{jt}\geq{}\underline{u}(k_{jt}, a_{jt}, \Delta_t) = \underline{u}_t(k_{jt}, a_{jt})$}\\
+				0 & \text{otherwise}
+			\end{array}\right.
+		\ee
+		\item{Investment rule: $i_{jt} = i(k_{jt}, a_{jt}, u_{jt}, \Delta_t) = i_t(k_{jt}, a_{jt}, u_{jt})$}
+	\ei
+	\textbf{Important:} under certain conditions, $i_t(\cdot)$ strictly increases in $u_{jt}$, if $i_t>0$
+\end{frame}
+
+\begin{frame}{Identification: simple version (no exit)}
+Main idea: use investment to back out productivity
+\be
+	i_{jt} = i_t(k_{jt}, a_{jt}, u_{jt}) \Longrightarrow u_{jt} = h_t(k_{jt}, a_{jt}, i_{jt})
+\ee
+Note: this inversion cannot be done for observations with $i_{jt} = 0$!\\\
+
+Substitute $u_{jt}$ into the production function:
+\begin{multline*}
+	q_{jt} = \beta_0 + \beta_kk_{jt} + \beta_\ell\ell_{jt} + \beta_aa_{jt} + u_{jt} + w_{jt}\\
+	= \beta_0 + \beta_kk_{jt} + \beta_aa_{jt} + \beta_\ell\ell_{jt} + h_t(k_{jt}, a_{jt}, i_{jt}) + w_{jt}
+\end{multline*}
+Explanatory variables are independent of $w_{jt}$! $h_t(\cdot)$ may be fairly complex -- treat it as an unknown function.\\\bigskip
+
+Cannot identify $\beta_0$, $\beta_k$, or $\beta_a$: e.g., $(\beta_0, h_t)$ and $(\beta'_0, h_t') = (\beta_0+1, h_t-1)$ will give observationally equivalent models.
+\end{frame}
+
+\begin{frame}{Identification: simple version (no exit)}
+	Two steps:
+	\bi
+		\item[Step 1]{Denote $\phi_t(k_{jt}, a_{jt}, i_{jt}) = \beta_0 + \beta_kk_{jt} + \beta_aa_{jt} + h_t(k_{jt}, a_{jt}, i_{jt})$. Estimate}
+		\be
+			q_{jt} = \beta_\ell\ell_{jt} + \phi_t(k_{jt}, a_{jt}, i_{jt}) + w_{jt}
+		\ee
+		semi-parametrically, get $\widehat{\beta}_\ell$ and $\widehat{\phi}_t(\cdot)$		
+		\item[Step 2]{Split $u_{jt}$: expected part + innovation: 
+		\be
+			u_{jt} = E[u_{jt}|I_{jt-1}] + \xi_{jt} = E[u_{jt}|u_{jt-1}] + \xi_{jt} = g(u_{jt-1}) + \xi_{jt}
+		\ee
+		Substitute:
+		\begin{align*}
+			q_{jt} - \beta_\ell\ell_{jt} &= \beta_0 + \beta_kk_{jt} + \beta_aa_{jt} + g(u_{jt-1}) + \xi_{jt} + w_{jt}\\
+			&= \beta_kk_{jt} + \beta_aa_{jt} + \widetilde{g}(\phi_{t-1} - \beta_kk_{jt-1} - \beta_aa_{jt-1}) + \xi_{jt} + w_{jt}
+		\end{align*}
+		$\widetilde{g}(\cdot)$ is unknown, $\xi_{jt}$ is mean-independent of $(k_{jt}, a_{jt}, i_{jt-1})$ and their lags ($\xi_{jt}$ is a ``surprise'' efficiency).\\
+		
+		Estimate the last equation semi-parametrically, get $\widehat{\beta}_k$ and $\widehat{\beta}_a$}
+	\ei
+\end{frame}
+
+\begin{frame}{Identification: extended version (endogenous exit)}
+	\bi
+	\item[Step 1]{
+	No changes in the identification procedure. Exit decisions depend on $i_{jt}$ (via $u_{jt}$)), $k_{jt}$, and $a_{jt}$ --- selection on covariates; doesn't bias the estimates.
+	\be
+			q_{jt} = \beta_\ell\ell_{jt} + \phi_t(k_{jt}, a_{jt}, i_{jt}) + w_{jt}
+	\ee}
+	\item[Step 2]{
+	Now we have to condition everything on firm's survival:
+	\be
+		E[q_{jt} - \beta_\ell\ell_{jt}| I_{jt-1}, \chi_{jt}=1] = \beta_0 + \beta_kk_{jt} + \beta_aa_{jt} + E[u_{jt}|I_{jt-1}, \chi_{jt}=1]
+	\ee}
+	How to find the last term?
+	\ei
+\end{frame}
+
+\begin{frame}{Identification: extended version, step 2}
+	\begin{align*}
+		E[u_{jt}|I_{jt-1}, \chi_{jt}=1] &= E[u_{jt}|I_{jt-1}, u_{jt}\geq\underline{u}_t(k_{jt}, a_{jt})]\\
+		& = E[u_{jt}|u_{jt-1}, a_{jt}, k_{jt}, u_{jt}\geq\underline{u}_t(k_{jt}, a_{jt})] \\
+		& = \int_{\underline{u}_t(k_{jt}, a_{jt})}^\infty\frac{u_{jt}dF(u_{jt}|u_{jt-1})}{\Pr\{u_{jt}\geq\underline{u}_t(k_{jt}, a_{jt})|u_{jt-1},k_{jt}, a_{jt}\}}\\
+		&= g(u_{jt-1}, \underline{u}_t(k_{jt}, a_{jt}))
+	\end{align*}
+	Average productivity conditional on survival depends on the cutoff productivity, below which firms exit. How to find this cutoff?
+	\begin{align*}
+		P_{jt}= \Pr\{\chi_{jt}=1&|I_{jt-1}\} = \Pr\{u_{jt}\geq\underline{u}_t(k_{jt}, a_{jt})|u_{jt-1}, k_{jt}, a_{jt}\}\\
+		& = \Pr\{\chi_{jt}=1|u_{jt-1}, \underline{u}_t(k_{jt}, a_{jt})\} = \widetilde{\widetilde{\varphi}}_t(u_{jt-1}, \underline{u}_t(k_{jt}, a_{jt}))\\
+		& = \widetilde{\varphi}_t(u_{jt-1}, k_{jt}, a_{jt}) = \varphi_t(i_{jt-1}, k_{jt-1}, a_{jt-1})
+	\end{align*}
+	One can identify $\varphi_t(\cdot)$ non-parametrically by computing the percentage of exiting firms for each $(i_{jt-1}, k_{jt-1}, a_{jt-1})$. Then compute $P_{jt}$ for each firm and repeat the inversion trick:
+	\begin{align*}
+		&\widetilde{\widetilde{\varphi}}_t(u_{jt-1},  \underline{u}_t(k_{jt}, a_{jt})) = P_{jt} \Longrightarrow{}\underline{u}_t(k_{jt}, a_{jt}) = f(u_{jt-1}, P_{jt})
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Identification: extended version, step 2}
+	Substitute everything into the original equation:
+	\begin{align*}
+		E[q_{jt} &- \beta_\ell\ell_{jt}| I_{jt-1}, \chi_{jt}=1] = \beta_0 + \beta_kk_{jt} + \beta_aa_{jt} + E[u_{jt}|I_{jt-1}, \chi_{jt}=1]\\
+		&= \beta_0 + \beta_kk_{jt} + \beta_aa_{jt} + g(u_{jt-1}, \underline{u}_t(k_{jt}, a_{jt}))\\
+		&= \beta_0 + \beta_kk_{jt} + \beta_aa_{jt} + g(u_{jt-1}, f(u_{jt-1}, P_{jt}))\\
+		&= \beta_kk_{jt} + \beta_aa_{jt} + \widetilde{g}(u_{jt-1}, P_{jt})\\
+		&= \beta_kk_{jt} + \beta_aa_{jt} + \widetilde{g}(\phi_{t-1} - \beta_kk_{jt-1} - \beta_aa_{jt-1}, P_{jt})
+	\end{align*}
+	Define $\eta_{jt}$ as an unexpected shock discovered by the continuing firms:
+	\be
+		q_{jt} - \beta_\ell\ell_{jt} = \beta_kk_{jt} + \beta_aa_{jt} + \widetilde{g}(\phi_{t-1} - \beta_kk_{jt-1} - \beta_aa_{jt-1}, P_{jt}) + \eta_{jt}
+	\ee
+	By definition, $\eta_{jt}$ is orthogonal to $I_{jt-1}$ \textbf{conditional on survival} in period $t$ (in particular, to $k_{jt}$, $a_{jt}$ and $P_{jt}$)\\\medskip
+	
+	Estimate the latter equation semiparametrically, replacing $\phi$ and $P$ with $\widehat{\phi}$ and $\widehat{P}$ $\Longrightarrow$ Find $\widehat{\beta}_k$ and $\widehat{\beta}_a$.
+\end{frame}
+
+\begin{frame}{Some notes}
+	\bi
+		\item{OP estimator requires positive $i_{jt-1}$ -- observations with zero $i_{jt-1}$ are removed from the sample. Does this cause selection bias?}
+		\bi
+			\item{1st stage equation? No, $i_{jt}$ and the error ($w_{jt}$) are mean independent}
+			\item{2nd stage equation? No, $i_{jt-1}\in{I_{jt-1}}$ $\Longrightarrow$ the error ($\eta_{jt}$) is mean independent of $i_{jt-1}$}
+			\item{However, this makes us discard valuable data}
+		\ei
+		\item{Specification test: $\theta = \beta_k/\beta_a$ is identified from two sources:}
+		\ei
+			\be
+		q_{jt} - \beta_\ell\ell_{jt} = \beta_a\left(a_{jt} + \frac{\beta_k}{\beta_a}k_{jt}\right) + \widetilde{g}\left(\phi_{t-1} - \beta_a\left(a_{jt-1} + \frac{\beta_k}{\beta_a}k_{jt-1}\right), P_{jt}\right) + \eta_{jt}
+			\ee
+Use each source separately to find $\theta_1$ and $\theta_2$:
+			\be
+		q_{jt} - \beta_\ell\ell_{jt} = \beta_a\left(a_{jt} + \theta_1k_{jt}\right) + \widetilde{g}\left(\phi_{t-1} - \beta_a\left(a_{jt-1} + \theta_2k_{jt-1}\right), P_{jt}\right) + \eta_{jt}
+			\ee
+and then test whether $\theta_1 = \theta_2$. They should be equal if the model's right.
+\end{frame}
+
+\begin{frame}{The setting}
+	\bi
+		\item{}Telecom equipment industry in 1972--87
+		\item{}Major restructuring since late 1960s
+		\bi
+			\item{Many new products (fax, modem, fiber optics, digital switches, etc.)}
+			\item{Deregulation and breakup of AT\&T monopoly}
+		\ei
+		\item{}De-facto monopoly in the equipment industry until 1980s:
+		\bi
+			\item{AT\&T procured 90\% of its equipment from own subsidiary, Western Electric}
+			\item{AT\&T customers were legally prohibited from connecting own equipment to the network}
+		\ei
+	\ei
+	
+\end{frame}
+
+\begin{frame}
+	\bi
+		\item{}1968 -- Carterphone decision, 1975 -- FCC certification program: customer-owned devices may be connected directly to the network, as long as they do not cause harm to the system
+		\item{late 1960s -- 1970s -- a surge of entry into telecom equipment business}
+		\item{}1982 -- ``United States v. AT\&T'' settlement: AT\&T to be split up
+		\item{}1984 -- Deregulation: 7 regional operating companies (Baby Bells), with no manufacturing capacity (prohibited by the agreement)
+		\item{1980s -- Rising competition from foreign entrants}
+	\ei
+\end{frame}
+
+\begin{frame}{The question}
+	Any apparent effects on industry productivity?
+	\bi
+		\item{}Aggregate productivity increased
+	\ei
+	What was the mechanism:
+	\bi
+		\item{}Improvements at the existing plants?
+		\item{}Reallocation of labor to more efficient plants?
+		\item{}Reallocation of capital to more efficient plants?
+	\ei
+\end{frame}
+
+\begin{frame}{Estimates}
+	\begin{center}
+	\begin{tabular}{|l|ccc|}\hline
+		Estimator & OLS	& Fixed effects	& Olley-Pakes\\\hline
+		Labor 	& 0.693	& 0.629 			& 0.608\\
+				& (0.019)	& (0.026) 		& (0.027)\\
+		Capital	& 0.304	&  0.150 			& 0.342\\
+				& (0.018)	&  (0.026) 		& (0.035)\\
+		Age		& -0.0046 & -0.008			& -0.001\\
+				& (0.0026)& (0.017)			& (0.004)\\\hline
+	\end{tabular}\\
+	{\footnotesize{}Source: Olley \& Pakes (1996)}
+	\end{center}
+	\bi
+		\item{The magnitude of $\widehat{\beta}_k$ is more reasonable}
+		\item{Compare estimated returns to scale}
+	\ei	
+\end{frame}
+
+\begin{frame}{Telecom industry productivity}
+	Aggregate industry productivity -- share-weighted average of the plant productivity:
+	\be
+		p_t = \sum_j\exp(q_{jt} - \widehat{\beta}_ll_{jt} - \widehat{\beta}_kk_{jt} - \widehat{\beta}_aa_{jt})\frac{Q_{jt}}{Q_t}
+	\ee
+	\begin{center}
+	\begin{tabular}{|l|c|c|}\hline
+		Time period 	& Annual productivity & Comments\\
+					& growth rate &\\\hline
+		1974--1975	& -0.279	& ???\\
+		1975--1977	& 0.020 	&\\
+		1978--1980	& 0.146 	&\\
+		1981--1983	& -0.087	& AT\&T breakup\\
+		1984--1987	& 0.041	&\\\hline
+	\end{tabular}
+	\end{center}
+	Further exercises: growth is mainly caused by reallocation of fixed assets between firms.\\
+	
+	If you have spare time, check Melitz, Polanec (2015) on growth decomposition formulae. Chance are you will use one of them at some point in your career.
+\end{frame}

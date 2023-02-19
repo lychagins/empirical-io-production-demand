@@ -1,0 +1,150 @@
+\subsection{Blundell \& Bond}
+
+%\begin{frame}{Next topic: Blundell \& Bond}
+%	A roadmap:
+%	\bi
+%		\item{OLS}
+%		\item{Fixed effects estimator}
+%		\item{Structural estimators:
+%			\bi
+%				\item{Olley \& Pakes}
+%				\item{Levinsohn \& Petrin}
+%				\item{Ackerberg, Caves, Frazer modifications}
+%			\ei
+%		}
+%	\ei
+%	Next: Blundell \& Bond estimator
+%	\bi
+%		\item{An attempt to improve upon the FE estimator}
+%		\item{Model of industry is not explicitly specified}
+%		\item{Origins: literature on dynamic panel data}
+%	\ei
+%\end{frame}
+%
+%\begin{frame}
+%	Production function in logs
+%	\be
+%		q_{jt} = \beta_0 + \beta_kk_{jt} + \beta_\ell\ell_{jt} + e_{jt}
+%	\ee
+%	The error term consists of four parts:
+%	\be
+%		e_{jt} = \delta_t + v_j + \chi_{jt} + w_{jt}
+%	\ee
+%	\bi
+%		\item{$\delta_t$ -- time fixed effect, common productivity shock}
+%		\item{$v_j$ -- firm fixed effect (constant part of productivity)}
+%		\item{$\chi_{jt}$ -- persistent shock: $\chi_{jt} = \rho\chi_{jt-1} + \varepsilon_{jt}$, where $|\rho|<1$, $\varepsilon_{jt}$ -- i.i.d.}
+%		\item{$w_{jt}$ -- i.i.d. (transitory shock)}
+%	\ei
+%\end{frame}
+%
+%\begin{frame}
+%	Rewrite the equation so that the new idiosyncratic term is i.i.d.:
+%	\be
+%		q_{jt} = \rho{}q_{jt-1} + \pi_1\ell_{jt} + \pi_2\ell_{jt-1} + \pi_3k_{jt} + \pi_4k_{jt-1} + \delta^*_t + v^*_j + w^*_{jt}
+%	\ee
+%	\bi
+%		\item{The economic model behind the choice of capital and labor is not spelled out}
+%		\item{Assume, however, that the past levels of capital and labor are uncorrelated with current and future shocks}
+%		\item{Assume also that $q_{j1}$ is uncorrelated with $w^*_{jt}$ for $t\geq{2}$ (initial conditions)}
+%	\ei
+%	Then, take equation in differences and use lags of $X_{jt} = [k_{jt}, k_{jt-1}, \ell_{jt}, \ell_{jt-1}, q_{jt-1}]'$ to instrument for $\Delta{}X_{jt}$
+%	\be
+%		\left\{\begin{array}{l}
+%		E[\Delta{}w^*_{jt}X_{jt-2}] = 0,\\
+%		E[\Delta{}w^*_{jt}X_{jt-3}] = 0,\\
+%		\dots\\
+%		E[\Delta{}w^*_{jt}X_{j1}] = 0,
+%		\end{array}\right.
+%	\ee
+%	GMM with these moment conditions -- Arellano-Bond estimator.
+%\end{frame}
+%
+%\begin{frame}{Weak instruments problem}
+%	We instrument current differences with past levels. But past levels may not be informative of the current differences.\\\bigskip
+%	Simple example:
+%	\be
+%		q_{jt} = \rho{}q_{jt-1} + v_j + w_{jt}
+%	\ee
+%	Let also $T=3$ ($T$ -- the number of time periods). In differences:
+%	\be
+%		\Delta{}q_{j3} = \rho\Delta{}q_{j2} + \Delta{}w_{j3}
+%	\ee
+%	We instrument $\Delta{q_{j2}}$ with $q_{j1}$. Recall that IV is equivalent to two-stage least squares. In the first stage we apply OLS to
+%	\be
+%		\Delta{}q_{j2} = \pi{}q_{j1} + r_{j}
+%	\ee
+%	But according to our first equation $\Delta{}q_{j2} = (\rho - 1)q_{j1} + v_j + w_{j2}$. In the limit 
+%	\be
+%		\widehat{\pi}_{OLS} = (\rho - 1)\frac{k}{(\sigma^2_v/\sigma^2_w) + k}, \; k = \frac{(1-\rho)^2}{(1-\rho^2)}
+%	\ee
+%	If $\rho\approx{1}$ or $\sigma^2_v\gg\sigma^2_w$, we have a problem: the instrument is weak.
+%\end{frame}
+%
+%\begin{frame}{Performance on simulated data (see DIF column)}
+%	\includegraphics[width = \textwidth]{Figures/bb_sim.png}
+%\end{frame}
+%
+%\begin{frame}{Equations in levels}
+%	Moments we used so far:
+%	\be
+%		q_{jt} = \rho{}q_{jt-1} + \pi_1\ell_{jt} + \pi_2\ell_{jt-1} + \pi_3k_{jt} + \pi_4k_{jt-1}  + v^*_j + w^*_{jt}
+%	\ee
+%	Lags of $X_{jt} = [k_{jt}, k_{jt-1}, \ell_{jt}, \ell_{jt-1}, q_{jt-1}]'$ are used as instruments for $\Delta{}X_{jt}$ in the difference equation
+%	\be
+%		\left\{\begin{array}{l}
+%		E[\Delta{}w^*_{jt}X_{jt-2}] = 0,\\
+%		E[\Delta{}w^*_{jt}X_{jt-3}] = 0,\\
+%		\dots\\
+%		E[\Delta{}w^*_{jt}X_{j1}] = 0,
+%		\end{array}\right.
+%	\ee
+%	What if we add more moment conditions? Blundell \& Bond: instrument levels with lagged differences in the levels equation. That is:
+%	\be
+%		E[(v^*_j + w^*_{jt})\Delta{}X_{jt-1}]=0
+%	\ee
+%	Changes in the observables are assumed to be uncorrelated with the unobservable fixed effect (true if all variables follow stationary processes).\\
+%	Note: equations with other lags of $X_{jt}$ are redundant (check why!)
+%\end{frame}
+%
+%\begin{frame}
+%	Blundell \& Bond use a sample of US firms to try their estimator
+%\begin{center}
+%\includegraphics[width=0.65\textwidth]{Figures/bb_main.png}
+%\end{center}
+%\end{frame}
+%
+%\begin{frame}{}
+%Inputs are highly autocorrelated -- the differences may be weak as instruments. This explains why DIF (Arellano-Bond) and SYS (Blundell-Bond) estimators deliver so different results in the previous table\\\medskip
+%\begin{center}
+%\includegraphics[width=0.7\textwidth]{Figures/bb_autocorr.png}
+%\end{center}
+%\end{frame}
+
+\subsection{Klette \& Griliches}
+
+\begin{frame}{Issues with deflation (Klette \& Griliches)}
+	Most of the time we do not observe physical output. We also don't observe firm-level prices $p_{jt}$. What we use in place of output is the firm's revenue deflated by industry price: $\tilde{q}_{jt} = R_{jt}/p_{It}$. But then
+	\be
+		\tilde{q}_{jt} = q_{jt} + \ln(p_{jt}/p_{It})
+	\ee
+	What if we find that some firm is very productive in terms of $q^*$? This could be due to real productivity or market power. Revenue production function:
+	\be
+		\tilde{q}_{jt} = \beta_0 + \beta_kk_{jt} + \beta_\ell\ell_{jt} + \ln(p_{jt}/p_{It}) + e_{jt}
+	\ee
+\end{frame}
+
+\begin{frame}
+	Klette \& Griliches: use consumer demand equation. Assume that the demand has constant price elasticity $\eta$ ($\eta<-1$)\:
+	\be
+		q_{jt} = q_{It} + \eta\ln(p_{jt}/p_{It}) + d_{jt}
+	\ee
+	where $d_{jt}$ is a demand shock, $p_{It}$ -- industry price, $q_{It}$ -- log of industry sales. But then
+	\be
+		\tilde{q}_{jt} = \frac{\eta+1}{\eta}(\beta_0 + \beta_kk_{jt} + \beta_\ell\ell_{jt}) - \frac{q_{It}}{\eta} - \frac{d_{jt}}{\eta} + \frac{\eta+1}{\eta}e_{jt}
+	\ee
+	Multiplier $\frac{\eta+1}{\eta}$ creates a downward bias in $\widehat\beta$ --- we should not be surprised to see decreasing returns to scale in our estimates!\\\medskip
+	The relative magnitudes of $\widehat\beta_\ell$ and $\widehat\beta_k$ should be okay, as long as we include industry sales.\\\bigskip
+	De Loecker (2011) = Klette-Griliches + LP/OP.\\\medskip
+	\textbf{But!} Constant demand elasticity implies constant markups --- very much at odds with evidence.
+\end{frame}
