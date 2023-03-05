@@ -8,13 +8,13 @@
 \newcommand{\bi}{\begin{itemize}}
 \newcommand{\ei}{\end{itemize}}
 
-\title{Industrial Organization, Fall 2016\\
-Problem set 0: Matlab basics}
+\title{Industrial Organization, Winter 2023\\
+Problem set 0: SciPy and NumPy basics}
 \date{}
 \begin{document}
 \maketitle
 
-This homework is not graded. Its sole purpose is to give you some basic hands-on experience with Matlab. Feel free to skip this problem set if you are confident in your Matlab skills.
+This homework is not graded. Its sole purpose is to give you some basic hands-on experience with Python and extremum estimators.
 
 
 \section*{Practice writing own code}
@@ -38,15 +38,16 @@ The objective is to estimate the Cobb-Douglas production function
 	\be
 		\min_{\beta_0, \beta_k, \beta_\ell}\sum_{j,t}\left(q_{jt} - \beta_0 - \beta_kk_{jt} - \beta_\ell\ell_{jt} \right)^2
 	\ee
-	That is, write a function that takes $\beta$'s, the vectors of $q_{jt}$, $k_{jt}$, $\ell_{jt}$ as input arguments and minimize it numerically w.r.t. $\beta$'s. In the language of tutorial 4, the data $q_{jt}$, $k_{jt}$ and $\ell_{jt}$ are the ``additional parameters''; check the above tutorial to find out how to pass data on to the objective function and minimize only w.r.t. $\beta$'s.
+	That is, write a function that takes $\beta$'s, the vectors of $q_{jt}$, $k_{jt}$, $\ell_{jt}$ as input arguments and minimize it numerically w.r.t. $\beta$'s.
 	
-	You can use either \texttt{fminunc} or \texttt{fminsearch}. A good practice is to run both of them sequentially, using the solution from the former as a starting point for the latter. If all is well, the second solver should not venture too far from the starting point.}
+	You can use \texttt{scipy.optimize.minimize}. A good practice is to run the solver repeatedly, using the solution from one run 1 as a starting point for run 2, etc. If all is well, the solver should not venture too far from the starting point. You may also consider using different numerical optimization methods for different runs to avoid method-specific convergence issues.}
+
 	\item{The second way of implementing OLS is more efficient. Let $q$ be a column vector stacking all $q_{jt}$'s and $X = [1, k, \ell]$ be a $6000\times{3}$ matrix, made of ones, $k_{jt}$ and $\ell_{jt}$. Let $\beta = [\beta_0, \beta_k, \beta_\ell]'$ be the vector of coefficients. In this notation,
 	\be
 		\widehat\beta_{OLS} = \left(X'X\right)^{-1}X'q
 	\ee
 	Use this formula to find the estimates in one line of code. Make sure that the results match those obtained using the previous implementation of OLS.}
-	\item{Implement the OLS estimator as a Matlab function that takes $q$ and $X = [1, k, \ell]$ as arguments (where $1$ is a vector of ones) and returns the estimate of $\beta = [\beta_0, \beta_k, \beta_\ell]'$.}
+	\item{Implement the OLS estimator as a Python function that takes $q$ and $X$ as arguments (where $1$ is a vector of ones) and returns the estimate of $\beta = [\beta_0, \beta_k, \beta_\ell]'$.}
 \end{itemize}
 
 \end{document}

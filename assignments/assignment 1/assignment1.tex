@@ -1,0 +1,82 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{fullpage}
+\usepackage{amsmath}
+
+\newcommand{\be}{\begin{equation*}}
+\newcommand{\ee}{\end{equation*}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+
+\title{Industrial Organization, Fall 2016\\
+Problem set 1: Production functions}
+\date{}
+\begin{document}
+\maketitle
+
+\textbf{Due:} Monday, Oct 31, by midnight.\\\medskip
+
+You can work individually or in groups of two; in the latter case, submit one homework per group. Submit your work via the e-learning page. Don't forget to include your Python code! \textbf{Report all your estimates of $\beta_\ell$ and $\beta_k$ and the respective confidence intervals in one table.}\medskip
+
+This exercise uses the dataset from Assignment 0. Each observation contains the following variables:
+\begin{description}
+	\item[year] Year, $t$
+	\item[id\_firm] Firm ID, $j$
+	\item[logl] Logarithm of labor, $\ell$
+	\item[logk] Logarithm of capital stock, $k$
+	\item[logm] Logarithm of intermediate inputs, $m$
+	\item[logq] Logarithm of output (in terms of value added, i.e. \textbf{there is no need to include intermediate materials in the production function}), $q$
+\end{description}
+
+\section{OLS and FE}	
+
+\begin{enumerate}
+\item{Estimate the Cobb-Douglas production function
+	\be
+		q_{jt} = \beta_kk_{jt} + \beta_\ell\ell_{jt} + \delta_t + e_{jt}
+	\ee
+	using OLS. Implement the OLS estimator as a Python function that takes $q$ and $X = [k, \ell, D_1, \dots, D_{T}]$ as arguments and returns the estimate of $\beta = [\beta_k, \beta_\ell, \delta_1, \dots, \delta_{T}]'$, where $D_1\dots{}D_{T}$ is full set of year dummies}
+	
+\item{Obtain the fixed effects estimates for $\beta$ (controlling for year effects as above).}
+
+
+\end{enumerate}
+
+\section{Levinsohn \& Petrin}
+\begin{enumerate}
+	\item{Run the first stage of the original Levinsohn-Petrin procedure. Use a cubic polynomial of $k$ and $m$ to approximate the non-parametric part, $\phi_t(\cdot)$. Allow $\phi_t(\cdot)$ to vary in time in a completely flexible way. The algorithm is as follows:
+	\begin{enumerate}
+		\item{Construct a matrix containing the powers of $m$ and $k$ as columns:\\
+		$x = [1, k, m, k^2, km, m^2, k^3, k^2m, km^2, m^3]$. Interact $x$ with year dummies and add the labor variable; that is, create $X = [\ell, x^*_1, \dots,x^*_T]$ where $x^*_t$'s contain respective elements of $x$ for period $t$ observations and zeros otherwise.}
+		\item{Use the OLS function created in the previous exercise to run a linear regression of $q$ on $X$. Report $\widehat{\beta}_\ell$.}
+		\item{Use predicted values $\widehat{q}$ to compute $\widehat{\phi}_{jt} = \widehat{q}_{jt} - \widehat{\beta}_\ell\ell_{jt}$}
+	\end{enumerate}}
+	\item{Write a Python function that takes $\beta_k$, $\widehat\beta_\ell$, $\widehat\phi$, $q$, and $X$ as arguments and computes the GMM objective function 
+	\begin{multline}\label{gmmobj}
+		\left[\sum_{j,t}\left(q_{jt} - \widehat{\beta}_\ell\ell_{jt} - \beta_kk_{jt} - \widehat{\widetilde{g}}(\widehat{\phi}_{jt-1} - \beta_kk_{jt-1})\right)k_{jt}\right]^2 + \\
+		\left[\sum_{j,t}\left(q_{jt} - \widehat{\beta}_\ell\ell_{jt} - \beta_kk_{jt} - \widehat{\widetilde{g}}(\widehat{\phi}_{jt-1} - \beta_kk_{jt-1})\right)m_{jt-1}\right]^2
+	\end{multline}
+	for the two Levinsohn-Petrin moment conditions weighted with the unit matrix:
+	\begin{align*}
+		&E[(\xi_{jt} + w_{jt})k_{jt}] = 0\\
+		&E[(\xi_{jt} + w_{jt})m_{jt-1}] = 0
+	\end{align*}
+	In what follows, this function will be minimized with respect to $\beta_k$, while $\widehat\beta_\ell$, $\widehat\phi$, $q$, and $X$ will be fixed . Suggested algorithm:
+	\begin{enumerate}
+		\item{Given the estimate of $\phi$ from the first stage and a candidate value for $\beta_k$, one can get an estimate for $u_{jt}$, the surprise productivity shock that affects factors: $\widehat{u}_{jt} = \widehat{\phi}_{jt} - \beta_kk_{jt}$.}
+		\item{Estimate a nonparametric regression $u_{jt} = \widetilde{g}(u_{jt-1}) + \xi_{jt}$ by approximating $\widetilde{g}(\cdot)$ with a 3rd degree polynomial. That is, run $\widehat{u}_{jt}$ on $\widehat{u}_{jt-1}$, $\widehat{u}^2_{jt-1}$, $\widehat{u}^3_{jt-1}$ and the constant using pooled OLS, and then find the fitted values $\widehat{\widetilde{g}}(\widehat{u}_{jt-1})$.}
+		\item{}For every firm and time period, compute
+		\begin{equation}
+			q_{jt} - \widehat{\beta}_\ell\ell_{jt} - \beta_kk_{jt} - \widehat{\widetilde{g}}(\widehat{\phi}_{jt-1} - \beta_kk_{jt-1}) \label{item:prod shock}
+		\end{equation}
+		Note that this expression approximates $\xi_{jt} + w_{jt}$, the component of the time $t$ productivity shock unexpected at $t-1$.
+		\item{Use computed values of (\ref{item:prod shock}) to evaluate the expression in (\ref{gmmobj}) and return the result in the output variable of your function (you'll have to drop observations with missing lags of $k$, $\widehat\phi$ and $m$)}
+	\end{enumerate}}
+	\item {}
+	Minimize this function with respect to $\beta_k$ using the standard SciPy solver, \texttt{scipy.optimize.minimize}. Note: the objective function may have more than one local minimum! Report the result.
+
+
+
+\end{enumerate}
+
+
+\end{document}
